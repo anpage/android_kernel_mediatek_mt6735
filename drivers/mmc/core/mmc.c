@@ -23,11 +23,7 @@
 #include "bus.h"
 #include "mmc_ops.h"
 #include "sd_ops.h"
-//@xuchunsheng added start for adding flash information in *#0661# in 11/17/2015
-#include <linux/flash_info.h>
-#include <linux/string.h>
-static char FlashInfo[sizeof(FLASH_INFO_SETTINGS)];
-//@xuchunsheng added end
+
 static const unsigned int tran_exp[] = {
 	10000,		100000,		1000000,	10000000,
 	0,		0,		0,		0
@@ -754,43 +750,6 @@ MMC_DEV_ATTR(enhanced_area_offset, "%llu\n",
 MMC_DEV_ATTR(enhanced_area_size, "%u\n", card->ext_csd.enhanced_area_size);
 MMC_DEV_ATTR(raw_rpmb_size_mult, "%#x\n", card->ext_csd.raw_rpmb_size_mult);
 MMC_DEV_ATTR(rel_sectors, "%#x\n", card->ext_csd.rel_sectors);
-//@xuchunsheng added start for adding flash information in *#0661# in 11/17/2015
-static ssize_t mmc_chipinfo_show (struct device *dev, struct device_attribute *attr, char *buf)
-{										
-    printk("[xucs]Enter in show_chipinfo_value\n");
-    struct mmc_card *card = mmc_dev_to_card(dev);				\
-    char recordCount = 0;
-    char idCount = 0;
-    char tempID[sizeof(FLASH_INFO_SETTINGS)] = "";
-
-    memset(FlashInfo, 0, sizeof(FlashInfo));
-
-    sprintf(FlashInfo, "%4x%4x%4x%4x", card->raw_cid[0],
-    	                                                   card->raw_cid[1],
-    	                                                   card->raw_cid[2],
-    	                                                   card->raw_cid[3]);
-    printk("[xucs]FlashID is %s\n",FlashInfo);
-    for(recordCount = 0; recordCount < num_of_emi_records; recordCount++)
-    {
-        printk("[xucs]The flash_info_settings[recordCount].id of length is %d\n",(int)strlen(flash_info_settings[recordCount].id));
-        printk("[xucs]The flash_info_settings[recordCount].id  is %s\n",flash_info_settings[recordCount].id);
-        printk("[xucs]The flash_info_settings[recordCount].vendorName is %s\n",flash_info_settings[recordCount].vendorName);
-        printk("[xucs]The flash_info_settings[recordCount].romSize is %s\n",flash_info_settings[recordCount].romSize);
-        printk("[xucs]The flash_info_settings[recordCount].ramSize is %s\n",flash_info_settings[recordCount].ramSize);
-	 
-        memset(tempID, 0, sizeof(tempID));
-	 
-        if(strnicmp(FlashInfo,flash_info_settings[recordCount].id,strlen(flash_info_settings[recordCount].id) - 2 ) == 0)
-        {
-            sprintf(tempID,"%s_%s+%s",flash_info_settings[recordCount].vendorName,flash_info_settings[recordCount].romSize,flash_info_settings[recordCount].ramSize);
-	     break;
-        }
-    }
-    printk("[xucs]Exit in show_chipinfo_value\n");
-    return sprintf(buf,"%s", tempID);					
-}										
-static DEVICE_ATTR(chipinfo, S_IRUGO, mmc_chipinfo_show, NULL);
-//@xuchunsheng added end
 
 static struct attribute *mmc_std_attrs[] = {
 	&dev_attr_cid.attr,
@@ -809,9 +768,6 @@ static struct attribute *mmc_std_attrs[] = {
 	&dev_attr_enhanced_area_size.attr,
 	&dev_attr_raw_rpmb_size_mult.attr,
 	&dev_attr_rel_sectors.attr,
-//@xuchunsheng added start for adding flash information in *#0661# in 11/17/2015
-    &dev_attr_chipinfo.attr,
-//@xuchunsheng added end
 	NULL,
 };
 ATTRIBUTE_GROUPS(mmc_std);
