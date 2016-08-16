@@ -1,0 +1,31 @@
+config TINNO_FINGER_PRINT_SUPPORT
+  bool TINNO_FINGER_PRINT_SUPPORT
+  default n
+  help
+    Switch for tinno fingerprint
+
+config FINGER_PRINT_CONPAT
+  bool FINGER_PRINT_CONPAT
+  default n
+  help
+    fp conpat
+
+
+config FINGER_PRINT_GSL6163
+  bool FINGER_PRINT_GSL6163
+  default n
+  help
+    Sliead Fingerprint
+
+config FINGERPRINT_ELAN
+  bool FINGERPRINT_ELAN
+  default n
+  help
+    Elan Fingerprint
+
+config FINGERPRINT_GOODIX_GFX1XM
+  bool FINGERPRINT_GOODIX_GFX1XM
+  default n
+  help
+    Goodix Fingerprint chip GF316M/GF516M/GF318M/
+

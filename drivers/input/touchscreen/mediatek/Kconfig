@@ -1,0 +1,77 @@
+#
+# Touchscreen driver configuration
+#
+menuconfig INPUT_TOUCHSCREEN
+	bool "Touchscreens"
+	help
+	  Say Y here, and a list of supported touchscreens will be displayed.
+	  This option doesn't affect the kernel.
+
+	  If unsure, say Y.
+
+if INPUT_TOUCHSCREEN
+
+config TOUCHSCREEN_MTK
+	bool "MediaTek Touch Panel Driver"
+	help
+	  Say Y here if you have MediaTek touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+config MTK_TGESTURE
+        bool "tGesture for Mediatek package"
+        default n
+
+# yixuhong add tinno touch panel start
+config MTK_FT6X06
+        bool "FT6336 for Mediatek package"
+        default n
+
+config TINNO_FT6X06
+        bool "FT6336 for Tinno package"
+        default n
+		
+config TINNO_FT5346
+        bool "FT5346 for Tinno package"
+        default n		
+
+config TOUCHSCREEN_MTK_GT615
+	bool "GT615 for Mediatek package"
+	default n
+	help
+	  Say Y here if you have GT615 touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+
+source "drivers/input/touchscreen/mediatek/gt615/Kconfig"
+
+config TOUCHSCREEN_SYNAPTICS
+	bool "synaptices for Mediatek package"
+	default n
+	help
+	  Say Y here if you have synaptices touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+
+# yixuhong add tinno touch panel end
+config TOUCHSCREEN_MTK_GT9XXTB_HOTKNOT
+	bool "GT9XXTB hotknot for Mediatek package"
+	default n
+	help
+	  Say Y here if you have GT9xx touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+
+source "drivers/input/touchscreen/mediatek/GT9XXTB_hotknot/Kconfig"
+endif
